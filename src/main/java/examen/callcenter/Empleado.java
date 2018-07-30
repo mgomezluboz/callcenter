@@ -1,6 +1,8 @@
 package examen.callcenter;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -15,11 +17,12 @@ public class Empleado extends ThreadPoolExecutor {
 		this.setRejectedExecutionHandler(handler);
 		tipoEmpleado = tipo;
 	}
-
+	
 	@Override
-	public void execute(Runnable llamada) {
-		super.execute(llamada);
+	public Future<Boolean> submit(Callable llamada) {
+		Future<Boolean> result = super.submit(llamada);
 		System.out.println("Llamada " + ((Llamada)llamada).getId() + " atendida por " + tipoEmpleado + ".\n");
+		return result;
 	}
 
 }

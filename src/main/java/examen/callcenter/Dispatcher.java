@@ -1,32 +1,44 @@
 package examen.callcenter;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.SynchronousQueue;
 
 public class Dispatcher {
 
-	private Empleado operadores = new Empleado(6, 0, new SynchronousQueue<Runnable>(), "operador");
-	private Empleado supervisores = new Empleado(3, 0, new SynchronousQueue<Runnable>(), "supervisor");
-	private Empleado directores = new Empleado(1, 0, new SynchronousQueue<Runnable>(), "director");
+	private Empleado operadores;
+	private Empleado supervisores;
+	private Empleado directores;
 	
-	public void dispatchCall(Llamada call) {
+	public Future<Boolean> dispatchCall(Llamada call) {
+		Future<Boolean> callResult = null;
 		try {
-			operadores.execute(call);
+			callResult = operadores.submit(call);
 		} catch(RejectedExecutionException operadoresBusyException) {
 			try {
-				supervisores.execute(call);
+				callResult = supervisores.submit(call);
 			} catch(RejectedExecutionException supervisoresBusyException) {
 				try {
-					directores.execute(call);
+					callResult = directores.submit(call);
 				} catch(RejectedExecutionException directoresBusyException) {
-					System.out.println( "|------->  La llamada " + call.getId() + " no pudo ser atendida." );
+					System.out.println( "------->  La llamada " + call.getId() + " no pudo ser atendida." );
+					return callResult;
 				}
 			}
 		}
+		
+		try {
+			return callResult;
+		} catch(Exception e) {
+			System.out.println( "------->  Error atendiendo llamada " + call.getId() + " no pudo ser atendida." );
+			return callResult;
+		}
 	}
 	
-	public Dispatcher() {
-		
+	public Dispatcher(int cantidadOperadores, int cantidadSupervisores, int cantidadDirectores) {
+		operadores = new Empleado(cantidadOperadores, 0, new SynchronousQueue<Runnable>(), "operador");
+		supervisores = new Empleado(cantidadSupervisores, 0, new SynchronousQueue<Runnable>(), "supervisor");
+		directores = new Empleado(cantidadDirectores, 0, new SynchronousQueue<Runnable>(), "director");
 	}
 	
 	public void shutdown() {
