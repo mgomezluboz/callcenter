@@ -1,0 +1,2 @@
+# Call center
+Proyecto java 8 con maven donde se simula un call center. Consiste de un dispatchCaller al que se puede llamar de distintos threads y que mediante Executors resuelve asignando a los distintos tipos de empleado. Contiene un test donde se realizan 10 llamadas concurrentes realizadas por threads independientes y ademas un main normal que puede ser corrido donde se simulan 12 llamadas iniciales y luego 1 llamada posterior.
