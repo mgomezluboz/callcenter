@@ -9,6 +9,15 @@ public class Dispatcher {
 	private Empleado operadores;
 	private Empleado supervisores;
 	private Empleado directores;
+	private static Dispatcher instance;
+	
+	public static Dispatcher getInstance() {
+		if (null == instance) {
+			instance = new Dispatcher(6,3,1); //configuracion default
+		}
+		
+		return instance;
+	}
 	
 	public Future<Boolean> dispatchCall(Llamada call) {
 		Future<Boolean> callResult = null;

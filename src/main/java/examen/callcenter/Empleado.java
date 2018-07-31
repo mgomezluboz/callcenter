@@ -18,6 +18,7 @@ public class Empleado extends ThreadPoolExecutor {
 		tipoEmpleado = tipo;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Future<Boolean> submit(Callable llamada) {
 		Future<Boolean> result = super.submit(llamada);

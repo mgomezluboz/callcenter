@@ -28,7 +28,7 @@ public class Llamada implements Callable<Boolean> {
 		 
 		 System.out.println( "-- Fin llamada " + this.id + ". --\n" );
 		 this.finalizadaConExito = true;
-		 return this.finalizadaConExito;
+		 return true;
 	}
 	
 	public int getId() {

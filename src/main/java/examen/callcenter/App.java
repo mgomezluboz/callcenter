@@ -32,23 +32,28 @@ public class App
         resultadosLlamadas.add(dispatcher.dispatchCall(new Llamada())); //12
 
       //simulo una llamada entrando mas tarde
-        try {
-			Thread.sleep(8000);
-		} catch (InterruptedException e) {
-			//si se interrumpiese, no es el caso
-			e.printStackTrace();
-		}
-        
-        dispatcher.dispatchCall(new Llamada());
+//        try {
+//			Thread.sleep(8000);
+//		} catch (InterruptedException e) {
+//			//si se interrumpiese, no es el caso
+//			e.printStackTrace();
+//		}
+//        
+//        dispatcher.dispatchCall(new Llamada());
         
         dispatcher.shutdown();
         
         try {
 	        for(int i = 0; i < resultadosLlamadas.size(); i++) {
-	        	System.out.println("Resultado llamada " + i + ": " + resultadosLlamadas.get(i).get().toString() + ".\n");
+	        	if(null == resultadosLlamadas.get(i)) {
+	        		System.out.println("Resultado llamada " + (i+1) + ": false.\n");
+	        	} else {
+	        		System.out.println("Resultado llamada " + (i+1) + ": " + resultadosLlamadas.get(i).get().toString() + ".\n");
+	        	}
 	        }
         } catch(Exception e) {
         	 System.out.println("Error leyendo valores futuros.");
+        	 e.printStackTrace();
         }
         
         System.out.println("Fin thread principal...");
